@@ -64,7 +64,25 @@ function playSong(id) {
 }
 
 function removeSong(id) {
-  // your code here
+  let songIndex = player.songs.findIndex(i => i.id === id)
+  if (songIndex !== -1){
+    player.songs.splice(songIndex, 1)
+  }
+  else {
+    throw Error("Song Doesn't Exist");
+  }
+  let playlistIndex = -1;
+  let removed = false; // Indicates if the song was removed.
+  for (let i = 0; i<player.playlists.length; i++){ // Checks every playlist if it has the song.
+    playlistIndex = player.playlists[i].songs.indexOf(id);
+    if (player.playlists[i].songs.indexOf(id) !== -1){
+      player.playlists[i].songs.splice(playlistIndex, 1);
+      removed = true; 
+    }
+  }
+  if (removed === false){
+    throw Error("Song Doesn't Exist");
+  }
 }
 
 function addSong(title, album, artist, duration, id) {
