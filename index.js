@@ -86,7 +86,41 @@ function removeSong(id) {
 }
 
 function addSong(title, album, artist, duration, id) {
-  // your code here
+  let idArray = []
+  for (let i = 0; i<player.songs.length; i++)
+  {
+    idArray.push(player.songs[i].id); // Adds to array the ids that already in use.
+  }
+
+  if (!idArray.includes(id)){
+
+    if (!id){ // Checks if the id is given.  
+      let empty = true; 
+      while (empty === true){ // Generates new id.
+        id = Math.floor(Math.random() * 101);
+        if (!idArray.includes(id)){
+          empty = false;
+        }
+      }
+    }
+
+    let song = {
+      id: id,
+      title: title,
+      album: album,
+      artist: artist,
+      duration: durationFormatReverse(duration),
+    }
+
+    player.songs.push(song);
+    return id;
+  }  
+  else {
+    throw Error("ID Is taken.")
+  }
+  
+
+
 }
 
 function removePlaylist(id) {
@@ -117,7 +151,7 @@ function searchByDuration(duration) {
   // your code here
 }
 
-function durationFormat(duration) { // Converst the duration to mm:ss format
+function durationFormat(duration) { // Converts the duration to mm:ss format
   let date = new Date(duration * 1000);
   let mm = date.getUTCMinutes();
   let ss = date.getSeconds();
@@ -133,6 +167,12 @@ function durationFormat(duration) { // Converst the duration to mm:ss format
     return  mm + ":" + "0" + ss
   }
   
+}
+
+function durationFormatReverse(duration){ // Converts the duration to seconds format
+    let a = duration.split(':');
+    let seconds = parseInt(a[0], 10)*60 + parseInt(a[1], 10);
+    return seconds
 }
 
 module.exports = {
