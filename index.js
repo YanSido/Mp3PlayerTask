@@ -48,12 +48,19 @@ const player = {
     { id: 5, name: 'Israeli', songs: [4, 5] },
   ],
   playSong(song) {
-    console.log(/* your code here */)
+    console.log("Playing " + song.title + " from " + song.album + " by " + song.artist + " | " + durationFormat(song.duration) + ".")
   },
 }
 
 function playSong(id) {
-  // your code here
+  let songIndex = player.songs.findIndex(i => i.id === id) // finds the index of the id in the songs array
+  if (songIndex !== -1){
+    player.playSong(player.songs[songIndex])
+  }
+  else{
+    throw Error("Song Doesn't Exist");
+  }    
+  
 }
 
 function removeSong(id) {
@@ -90,6 +97,24 @@ function searchByQuery(query) {
 
 function searchByDuration(duration) {
   // your code here
+}
+
+function durationFormat(duration) { // Converst the duration to mm:ss format
+  let date = new Date(duration * 1000);
+  let mm = date.getUTCMinutes();
+  let ss = date.getSeconds();
+  if(mm<10 && ss < 10){
+    return "0" + mm + ":" + "0" + ss
+  }
+
+  if(mm<10){
+    return "0" + mm + ":" + ss
+  }
+
+  if(ss<10){
+    return  mm + ":" + "0" + ss
+  }
+  
 }
 
 module.exports = {
