@@ -124,7 +124,16 @@ function addSong(title, album, artist, duration, id) {
 }
 
 function removePlaylist(id) {
-  // your code here
+  let playlistArray = [];
+  for (let i = 0; i<player.playlists.length; i++){
+    playlistArray.push(player.playlists[i].id)
+  }
+  if (!playlistArray.includes(id)){
+    throw Error("ID is Unavailable.")
+  }
+
+  player.playlists.splice(player.playlists.indexOf(id), 1);
+
 }
 
 function createPlaylist(name, id) {
