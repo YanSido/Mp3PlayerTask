@@ -168,7 +168,27 @@ function createPlaylist(name, id) {
 }
 
 function playPlaylist(id) {
-  // your code here
+  let idArray = []
+  for (let i = 0; i<player.playlists.length; i++)
+  {
+    idArray.push(player.playlists[i].id); // Adds to array the ids that already in use.
+  }
+  if (idArray.includes(id)){
+    let playlistIndex = player.playlists.findIndex(i => i.id === id); // Finding the index of the playlist
+    let songsArray = [];
+    
+    for (let i =0; i<player.playlists[playlistIndex].songs.length; i++){ // Adds the playlist songs to array.
+      songsArray.push(player.playlists[playlistIndex].songs[i]);
+    }
+
+    for (let i =0; i<songsArray.length; i++){ // Play songs in the songs array
+      player.playSong(player.songs[player.songs.findIndex(a => a.id === songsArray[i])])
+    }
+
+}
+else{
+  throw Error("Playlist Doesn't Exist");
+}
 }
 
 function editPlaylist(playlistId, songId) {
