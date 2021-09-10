@@ -137,7 +137,34 @@ function removePlaylist(id) {
 }
 
 function createPlaylist(name, id) {
-  // your code here
+  let idArray = []
+  for (let i = 0; i<player.playlists.length; i++)
+  {
+    idArray.push(player.playlists[i].id); // Adds to array the ids that already in use.
+  }
+
+  if (!idArray.includes(id)){
+
+    if (!id){ // Checks if the id is given.  
+      let empty = true; 
+      while (empty === true){ // Generates new id.
+        id = Math.floor(Math.random() * 101);
+        if (!idArray.includes(id)){
+          empty = false;
+        }
+      }
+    }
+
+    let playlist = 
+      { id: id, name: name, songs: [] }
+    
+
+    player.playlists.push(playlist);
+    return id;
+  }  
+  else {
+    throw Error("ID Is taken.")
+  }
 }
 
 function playPlaylist(id) {
