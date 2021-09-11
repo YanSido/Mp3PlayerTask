@@ -236,7 +236,7 @@ function editPlaylist(playlistId, songId) {
 function playlistDuration(id) {
   let totalDuration = 0;
   let playlistIndex = player.playlists.findIndex(i => i.id === id)
-  
+
   if (playlistIndex === -1){
     throw Error("No Such Playlist");
   }
@@ -252,7 +252,55 @@ function playlistDuration(id) {
 }
 
 function searchByQuery(query) {
-  // your code here
+  let songsArr = [] ; // Songs that the query exist in them.
+  let playlistArr = [] ; // Playlists that the query exist in them.
+  let results = {}
+
+  for (let i =0; i<player.songs.length; i++) // Checks each song if contains the query text
+  {
+    if (player.songs[i].title.includes(query)){
+      songsArr.push(player.songs[i].title);
+    }
+    else if(player.songs[i].album.includes(query)){
+      songsArr.push(player.songs[i].title);
+    }
+    else if(player.songs[i].artist.includes(query)){
+      songsArr.push(player.songs[i].title);
+    }
+  }
+
+  for (let i =0; i<player.playlists.length; i++) // Checks each playlist if contains the query text
+  {
+    if (player.playlists[i].name.includes(query)){
+      playlistArr.push(player.playlists[i].name);
+    }
+  }
+
+  // Sorts the array by their names.
+  songsArr = songsArr.sort()
+  playlistArr = playlistArr.sort()
+
+  let songsArrSorted = [];
+  let playlistsArrSorted = [];
+  let songIndex;
+  let playlistIndex;
+
+  for (let i =0; i<songsArr.length; i++){
+    songIndex = player.songs.findIndex(a => a.title === songsArr[i]) // finds the index of the id in the songs array
+    songsArrSorted.push(player.songs[songIndex]);
+  }
+
+  for (let i =0; i<playlistArr.length; i++){
+    playlistIndex = player.playlists.findIndex(a => a.name === playlistArr[i]) // finds the index of the id in the playlists array
+    playlistsArrSorted.push(player.playlists[playlistIndex]);
+  }
+  
+  results = {
+    songs : songsArrSorted,
+    playlists : playlistsArrSorted,
+  }
+
+  return results
 }
 
 function searchByDuration(duration) {
