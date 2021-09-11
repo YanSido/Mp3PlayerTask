@@ -304,10 +304,50 @@ function searchByQuery(query) {
 }
 
 function searchByDuration(duration) {
-  // your code here
+  let durationSeconds = durationFormatReverse(duration) // Converts the duration to seconds format.
+  let durationSongsArr = [] // Array of all songs duration.
+  let durationPlaylistArr = [] // Array of all songs duration.
+
+  for (let i =0; i<player.songs.length; i++){
+    durationSongsArr.push(player.songs[i].duration);
+  }
+  for (let i =0; i<player.playlists.length; i++){
+    durationPlaylistArr.push(playlistDuration(player.playlists[i].id));
+  }
+
+  let closestFirst = closest(durationSeconds, durationSongsArr); // Closest duration in the songs array
+  let closestSecond = closest(durationSeconds, durationPlaylistArr); // Closest duration in the playlist array
+  let winner;
+  let result;
+  let songIndex;
+
+    // Checks which one from the songs duration and playlists duration it is.
+  if (Math.abs(closestFirst - durationSeconds) < Math.abs(closestSecond - durationSeconds)){
+    winner = closestFirst;
+  }
+  else if (Math.abs(closestFirst - durationSeconds) > Math.abs(closestSecond - durationSeconds)){
+    winner = closestSecond;
+  }
+
+  // For each variable it is a different handle
+  if (winner === closestFirst){
+    songIndex = player.songs.findIndex(i => i.duration === winner);
+    result = player.songs[songIndex];
+  }
+  if (winner === closestSecond){
+    for (let i = 0; i<player.playlists.length; i++){
+      if (playlistDuration(player.playlists[i].id) === winner){
+        result = player.playlists[i]
+      }
+    }
+  }
+
+  return result
+
+
 }
 
-function durationFormat(duration) { // Converts the duration to mm:ss format
+function durationFormat(duration) { // Converts the duration to mm:ss format.
   let date = new Date(duration * 1000);
   let mm = date.getUTCMinutes();
   let ss = date.getSeconds();
@@ -330,6 +370,18 @@ function durationFormatReverse(duration){ // Converts the duration to seconds fo
     let seconds = parseInt(a[0], 10)*60 + parseInt(a[1], 10);
     return seconds
 }
+
+function closest(num, arr){
+  let closeEnough = arr[0];
+  let before = false;
+  for (let i =0; i<arr.length ; i++){
+    if (Math.abs(num-arr[i]) < Math.abs(num-closeEnough)){
+      closeEnough = arr[i];
+    }
+  }
+  return closeEnough;
+}
+
 
 module.exports = {
   player,
