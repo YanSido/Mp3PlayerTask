@@ -192,7 +192,41 @@ else{
 }
 
 function editPlaylist(playlistId, songId) {
-  // your code here
+  let playlistIdArray = [];
+  let songIdArray = [];
+  for (let i = 0; i<player.playlists.length; i++)
+  {
+    playlistIdArray.push(player.playlists[i].id); // Adds to array the ids that already in use.
+  }
+
+  let playlistIndex = player.playlists.findIndex(i => i.id === playlistId); // Finding the index of the playlist.
+
+  if (!playlistIdArray.includes(playlistId)){
+    throw Error("No Such Playlist")
+  }
+  for (let i = 0; i<player.songs.length; i++)
+  {
+    songIdArray.push(player.songs[i].id); // Adds to array the ids that already in use.
+  }
+  if (!songIdArray.includes(songId)){
+    throw Error("No Such Song")
+  }
+  if (playlistIdArray.includes(playlistId)){
+  if (player.playlists[playlistIndex].songs.includes(songId)){ // Checks if the song is in the playlist.
+    let songIndex = player.playlists[playlistIndex].songs.indexOf(songId)
+    player.playlists[playlistIndex].songs.splice(songIndex,1); // Removes the song from the playlist.
+    if (player.playlists[playlistIndex].songs.length === 0){ // Checks if the playlist is empty.
+      removePlaylist(playlistId);
+    }
+  }
+  else if (!player.playlists[playlistIndex].songs.includes(songId)){ // Checks if the song is not in the playlist.
+    player.playlists[playlistIndex].songs.push(songId); // Adds the song to the playlist
+  }
+  
+
+
+  
+}
 }
 
 function playlistDuration(id) {
