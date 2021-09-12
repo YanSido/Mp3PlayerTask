@@ -330,7 +330,7 @@ function searchByDuration(duration) {
   }
 
   // For each variable it is a different handle
-  if (winner === closestFirst){
+  if (winner === closestFirst){ 
     songIndex = player.songs.findIndex(i => i.duration === winner);
     result = player.songs[songIndex];
   }
